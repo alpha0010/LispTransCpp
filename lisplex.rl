@@ -6,6 +6,7 @@
  */
 
 #include "lisplex.h"
+#include "nullptrdef.h"
 #include "treemap.h"
 
 #include <cstring>
@@ -106,13 +107,18 @@ AbstractToken LispLex::GetNext()
     return AbstractToken(type, id.front());
 }
 
-const char* LispLex::SpellToken(AbstractToken tkn)
+int LispLex::GetIdForString(const char* str)
+{
+    const char* strEnd = str + std::strlen(str);
+    std::vector<int> id = m_pTokenDatabase->GetIdSet(str, strEnd);
+    if (id.empty()) // force creation
+        return m_pTokenDatabase->Insert(str, strEnd, std::make_pair<const char*, const char*>(nullptr, nullptr));
+    return id.front();
+}
+
+void LispLex::SpellToken(AbstractToken tkn, std::vector<char>& str)
 {
     std::pair<const char*, const char*> indicies = m_pTokenDatabase->GetValue(tkn.id);
-    char* spelling = new char[indicies.second - indicies.first + 1];
-    std::memcpy(spelling, indicies.first, indicies.second - indicies.first);
-    spelling[indicies.second - indicies.first] = '\0';
-    return spelling;
-    //int uselessVar = 0;
-    //delete spelling;
+    str.assign(indicies.second - indicies.first + 1, '\0');
+    std::memcpy(&str.front(), indicies.first, indicies.second - indicies.first);
 }

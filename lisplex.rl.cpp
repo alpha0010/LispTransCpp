@@ -8,22 +8,23 @@
  */
 
 #include "lisplex.h"
+#include "nullptrdef.h"
 #include "treemap.h"
 
 #include <cstring>
 
 
-#line 53 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 54 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 
 
 
-#line 21 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+#line 22 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 static const int lisp_start = 4;
 
 static const int lisp_en_main = 4;
 
 
-#line 56 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 57 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 
 LispLex::LispLex(const char* lispCode) :
     m_Buffer(lispCode, lispCode + std::strlen(lispCode)),
@@ -45,7 +46,7 @@ LispLex::LispLex(const char* lispCode) :
     const char* ts;
     const char* te;
 	
-#line 49 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+#line 50 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 	{
 	cs = lisp_start;
 	ts = 0;
@@ -53,7 +54,7 @@ LispLex::LispLex(const char* lispCode) :
 	act = 0;
 	}
 
-#line 77 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 78 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	m_State.Update(cs, act, &m_Buffer.front(), ts, te);
 }
 
@@ -73,42 +74,42 @@ AbstractToken LispLex::GetNext()
     const char* te = m_State.tokenEnd;
     TokenType type = ttInvalid;
     
-#line 77 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+#line 78 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 	{
 	if ( p == pe )
 		goto _test_eof;
 	switch ( cs )
 	{
 tr2:
-#line 20 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 21 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p+1;{ type = ttString;     {p++; cs = 4; goto _out;} }}
 	goto st4;
 tr5:
-#line 28 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 29 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p+1;{ type = ttComment;    {p++; cs = 4; goto _out;} }}
 	goto st4;
 tr6:
-#line 50 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 51 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p+1;}
 	goto st4;
 tr7:
-#line 45 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 46 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p+1;{ type = ttLeftParen;  {p++; cs = 4; goto _out;} }}
 	goto st4;
 tr8:
-#line 47 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 48 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p+1;{ type = ttRightParen; {p++; cs = 4; goto _out;} }}
 	goto st4;
 tr9:
-#line 40 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 41 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p+1;{ type = ttOperator; {p++; cs = 4; goto _out;} }}
 	goto st4;
 tr10:
-#line 36 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 37 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p+1;{ type = ttOperator; {p++; cs = 4; goto _out;} }}
 	goto st4;
 tr12:
-#line 42 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 43 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p+1;{ type = ttOperator; {p++; cs = 4; goto _out;} }}
 	goto st4;
 tr15:
@@ -124,7 +125,7 @@ tr15:
 	}
 	goto st4;
 tr16:
-#line 24 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 25 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{te = p;p--;{ type = ttIdentifier; {p++; cs = 4; goto _out;} }}
 	goto st4;
 st4:
@@ -135,7 +136,7 @@ st4:
 case 4:
 #line 1 "NONE"
 	{ts = p;}
-#line 139 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+#line 140 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 	switch( (*p) ) {
 		case 32: goto tr6;
 		case 34: goto st1;
@@ -181,20 +182,20 @@ case 2:
 tr11:
 #line 1 "NONE"
 	{te = p+1;}
-#line 38 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 39 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{act = 6;}
 	goto st5;
 tr13:
 #line 1 "NONE"
 	{te = p+1;}
-#line 32 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 33 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	{act = 4;}
 	goto st5;
 st5:
 	if ( ++p == pe )
 		goto _test_eof5;
 case 5:
-#line 198 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+#line 199 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 	if ( 48 <= (*p) && (*p) <= 57 )
 		goto tr13;
 	goto tr15;
@@ -240,12 +241,12 @@ case 6:
 	_out: {}
 	}
 
-#line 96 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 97 "/home/alpha/dev/LispTransCpp/lisplex.rl"
     m_State.Update(cs, act, p, ts, te);
     if ( cs == 
-#line 247 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+#line 248 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 0
-#line 97 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 98 "/home/alpha/dev/LispTransCpp/lisplex.rl"
  || !ts)
     {
         return AbstractToken(ttInvalid, -1);
@@ -258,13 +259,18 @@ case 6:
     return AbstractToken(type, id.front());
 }
 
-const char* LispLex::SpellToken(AbstractToken tkn)
+int LispLex::GetIdForString(const char* str)
+{
+    const char* strEnd = str + std::strlen(str);
+    std::vector<int> id = m_pTokenDatabase->GetIdSet(str, strEnd);
+    if (id.empty()) // force creation
+        return m_pTokenDatabase->Insert(str, strEnd, std::make_pair<const char*, const char*>(nullptr, nullptr));
+    return id.front();
+}
+
+void LispLex::SpellToken(AbstractToken tkn, std::vector<char>& str)
 {
     std::pair<const char*, const char*> indicies = m_pTokenDatabase->GetValue(tkn.id);
-    char* spelling = new char[indicies.second - indicies.first + 1];
-    std::memcpy(spelling, indicies.first, indicies.second - indicies.first);
-    spelling[indicies.second - indicies.first] = '\0';
-    return spelling;
-    //int uselessVar = 0;
-    //delete spelling;
+    str.assign(indicies.second - indicies.first + 1, '\0');
+    std::memcpy(&str.front(), indicies.first, indicies.second - indicies.first);
 }

@@ -71,37 +71,45 @@ void ParseTree::Parse()
     DumpTree();
 }
 
-void ParseTree::DumpTree(ParseNode* node, int depth, int activeMask)
+struct TreePrinter
 {
-    if (!node)
-        node = m_pRoot;
-    while (node)
+    int activeMask;
+    LispLex& m_Lexer;
+
+    TreePrinter(LispLex& lexer) : activeMask(0xfffffff), m_Lexer(lexer)
     {
-        for (int i = 0; i < depth - 1; ++i)
+        std::cout << "node0 <__root__>\n";
+    }
+
+    ParseVisitorAction operator()(AbstractToken* curToken, int depth, ParseNode* curNode)
+    {
+        for (int i = 0; i < depth; ++i)
         {
             if (((1 << i) & activeMask) != 0)
                 std::cout << "│ ";
             else
                 std::cout << "  ";
         }
-        if (depth != 0)
+        if (curNode->nextSibling)
         {
-            if (node->nextSibling)
-            {
-                std::cout << "├─";
-                activeMask |= (1 << (depth - 1));
-            }
-            else
-            {
-                std::cout << "└─";
-                activeMask &= ~(1 << (depth - 1));
-            }
+            std::cout << "├─";
+            activeMask |= (1 << (depth));
         }
-        std::cout << "node" << node->type << "\n";
-        if (node->firstChild)
-            DumpTree(node->firstChild, depth + 1, activeMask);
-        node = node->nextSibling;
+        else
+        {
+            std::cout << "└─";
+            activeMask &= ~(1 << (depth));
+        }
+        std::vector<char> tknStr;
+        m_Lexer.SpellToken(*curToken, tknStr);
+        std::cout << "node" << curNode->type << ' ' << curToken->id << "<'" << &tknStr.front() << "'>\n";
+        return pvaRecurse;
     }
+};
+
+void ParseTree::DumpTree()
+{
+    WalkTree(TreePrinter(m_Lexer));
 }
 
 void ParseTree::HandleNode(ParseNode* node, bool nodeIsFirst)
@@ -126,6 +134,7 @@ void ParseTree::HandleNode(ParseNode* node, bool nodeIsFirst)
         case ttRightParen:
             return; // fall back to parent scope
 
+        case ttComment:
         case ttInvalid:
         default:
             std::cerr << "Error in ParseTree::HandleNode()\n";
@@ -140,4 +149,20 @@ void ParseTree::HandleNode(ParseNode* node, bool nodeIsFirst)
         HandleNode(node, true); // process sub-nodes
 
     HandleNode(node, false); // process next nodes
+}
+
+bool ParseTree::VisitChildren(ParseNode** node, AbstractToken** curToken)
+{
+    if (!(*node))
+        *node = m_pRoot;
+    if (*curToken)
+        *node = (*node)->nextSibling;
+    else // first call
+        *node = (*node)->firstChild;
+    if (*node)
+    {
+        *curToken = &(*node)->token;
+        return true;
+    }
+    return false;
 }

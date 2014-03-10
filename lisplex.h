@@ -41,7 +41,8 @@ class LispLex
 
         AbstractToken GetNext();
 
-        const char* SpellToken(AbstractToken tkn); // please delete when you are done
+        int GetIdForString(const char* str); // do not call until lexical analysis is complete
+        void SpellToken(AbstractToken tkn, std::vector<char>& str);
 
     private:
         std::vector<char> m_Buffer;
