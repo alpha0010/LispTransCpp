@@ -50,6 +50,8 @@
 			<Add option="-ansi" />
 			<Add option="-Werror=return-type" />
 		</Compiler>
+		<Unit filename="cppprinter.cpp" />
+		<Unit filename="cppprinter.h" />
 		<Unit filename="lisplex.h" />
 		<Unit filename="lisplex.rl">
 			<Option compile="1" />

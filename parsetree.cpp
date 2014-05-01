@@ -39,6 +39,7 @@ struct ParseNode
 ParseTree::ParseTree(LispLex& lexer) :
     m_Lexer(lexer), m_pRoot(new ParseNode(pntRoot, AbstractToken(ttInvalid, -1)))
 {
+    Parse();
 }
 
 ParseTree::~ParseTree()
@@ -68,7 +69,6 @@ void ParseTree::Parse()
             return; // error
         }
     }
-    DumpTree();
 }
 
 struct TreePrinter

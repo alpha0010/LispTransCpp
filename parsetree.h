@@ -20,10 +20,8 @@ class ParseTree
         ParseTree(LispLex& lexer);
         ~ParseTree();
 
-        void Parse();
-
         // ParseVisitorAction VisitFunctor::operator()(AbstractToken* curToken, int depth, ParseNode* curNode);
-        // the parameters curNode can be passed to WalkTree() to start a new traversal from there
+        // the parameter curNode can be passed to WalkTree() to start a new traversal from there
         template<typename VisitFunctor>
         void WalkTree(VisitFunctor Visit, ParseNode* parent = nullptr)
         {
@@ -33,6 +31,8 @@ class ParseTree
         void DumpTree();
 
     private:
+        void Parse();
+
         void HandleNode(ParseNode* node, bool nodeIsFirst);
         bool VisitChildren(ParseNode** node, AbstractToken** curToken);
 
