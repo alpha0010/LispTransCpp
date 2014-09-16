@@ -126,7 +126,7 @@ void ParseTree::HandleNode(ParseNode* node, bool nodeIsFirst)
 
         case ttIdentifier:
         case ttString:
-        case ttIntLiteral:
+        case ttInteger:
         case ttOperator:
             nodeType = pntLiteral;
             break;

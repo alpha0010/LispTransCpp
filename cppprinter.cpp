@@ -72,10 +72,11 @@ struct StatementDef
 
 struct FunctionDef
 {
-    FunctionDef(AbstractToken identifier) : returnType(dtUnknown), name(identifier) {}
+    FunctionDef(AbstractToken identifier) : returnType(dtUnknown), name(identifier), doc(ttInvalid, -1) {}
 
     DataType returnType;
     AbstractToken name;
+    AbstractToken doc;
     std::vector<VariableDef> parameters;
     std::vector<StatementDef> body;
 };
@@ -198,7 +199,10 @@ struct FuncScanner
             case fsDoc:
                 m_State = fsBody;
                 if (curToken->type == ttString)
-                    break; // eat doc string (TODO: store?)
+                {
+                    m_Funcs.back().doc = *curToken;
+                    break;
+                }
                 // fall through
             case fsBody:
                 m_Parser.WalkTree(StatementScanner(), curNode); // TODO!!!
@@ -229,11 +233,17 @@ void CppPrinter::PrintTo(std::ostream& out)
 {
     std::vector<FunctionDef> functions;
     m_Parser.WalkTree(CppTranslator(m_Parser, functions));
+    // ResolveDataTypes(functions); // TODO
     for (std::vector<FunctionDef>::const_iterator fItr = functions.begin();
          fItr != functions.end(); ++fItr)
     {
-        PrintDataType(fItr->returnType, out);
         std::vector<char> tknStr;
+        if (fItr->doc.type != ttInvalid)
+        {
+            m_Lexer.SpellToken(fItr->doc, tknStr);
+            out << "// " << &tknStr.front() << '\n';
+        }
+        PrintDataType(fItr->returnType, out);
         m_Lexer.SpellToken(fItr->name, tknStr);
         out << ' ' << &tknStr.front() << '(';
         for (std::vector<VariableDef>::const_iterator pItr = fItr->parameters.begin();
@@ -247,7 +257,7 @@ void CppPrinter::PrintTo(std::ostream& out)
         }
         out << ")\n{";
         // TODO
-        out << '}';
+        out << "}\n";
     }
 }
 

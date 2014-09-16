@@ -16,8 +16,8 @@
 
 	main := |*
 
-        # double quote.
-        ( '"' ( [^"\\\n] | /\\./ )* '"' )
+        # double quote
+        ( '"' ( /[^"\\\n]/ | /\\./ )* '"' )
             { type = ttString;     fbreak; };
 
         # identifier
@@ -30,7 +30,11 @@
 
         # integer
         (digit+ | '-' digit+)
-            { type = ttIntLiteral; fbreak; };
+            { type = ttInteger;    fbreak; };
+
+        # float
+        (digit+ '.' digit+ | '-' digit+ '.' digit+)
+            { type = ttFloat;      fbreak; };
 
         # operators
         '+'
@@ -98,6 +102,12 @@ AbstractToken LispLex::GetNext()
     if ( cs == %%{ write error; }%% || !ts)
     {
         return AbstractToken(ttInvalid, -1);
+    }
+
+    if (type == ttString) // strip quotes
+    {
+        ++ts;
+        --te;
     }
 
     std::vector<int> id = m_pTokenDatabase->GetIdSet(ts, te);

@@ -19,9 +19,9 @@
         // support operator overloading (== and !=)
         template<typename _Tp> bool equals(_Tp const& rhs) const { return rhs == 0; }
     private:
-        // can't take address of nullptr
+        // can not take address of nullptr
         void operator&() const;
-        // can't copyable
+        // can not copy
         nullptr_t(const nullptr_t&);
         const nullptr_t& operator=(const nullptr_t&);
     } nullptr_;

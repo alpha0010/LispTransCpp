@@ -13,7 +13,8 @@ enum TokenType
 {
     ttIdentifier,
     ttString,
-    ttIntLiteral,
+    ttInteger,
+    ttFloat,
     ttOperator,
     ttLeftParen,
     ttRightParen,

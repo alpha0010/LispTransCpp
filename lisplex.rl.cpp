@@ -14,17 +14,17 @@
 #include <cstring>
 
 
-#line 54 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 58 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 
 
 
 #line 22 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
-static const int lisp_start = 4;
+static const int lisp_start = 5;
 
-static const int lisp_en_main = 4;
+static const int lisp_en_main = 5;
 
 
-#line 57 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 61 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 
 LispLex::LispLex(const char* lispCode) :
     m_Buffer(lispCode, lispCode + std::strlen(lispCode)),
@@ -45,7 +45,7 @@ LispLex::LispLex(const char* lispCode) :
     int cs, act;
     const char* ts;
     const char* te;
-	
+
 #line 50 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 	{
 	cs = lisp_start;
@@ -54,7 +54,7 @@ LispLex::LispLex(const char* lispCode) :
 	act = 0;
 	}
 
-#line 78 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 82 "/home/alpha/dev/LispTransCpp/lisplex.rl"
 	m_State.Update(cs, act, &m_Buffer.front(), ts, te);
 }
 
@@ -73,7 +73,7 @@ AbstractToken LispLex::GetNext()
     const char* ts = m_State.tokenStart;
     const char* te = m_State.tokenEnd;
     TokenType type = ttInvalid;
-    
+
 #line 78 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 	{
 	if ( p == pe )
@@ -82,84 +82,88 @@ AbstractToken LispLex::GetNext()
 	{
 tr2:
 #line 21 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p+1;{ type = ttString;     {p++; cs = 4; goto _out;} }}
-	goto st4;
-tr5:
-#line 29 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p+1;{ type = ttComment;    {p++; cs = 4; goto _out;} }}
-	goto st4;
-tr6:
-#line 51 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p+1;}
-	goto st4;
+	{te = p+1;{ type = ttString;     {p++; cs = 5; goto _out;} }}
+	goto st5;
+tr4:
+#line 33 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{{p = ((te))-1;}{ type = ttInteger;    {p++; cs = 5; goto _out;} }}
+	goto st5;
 tr7:
-#line 46 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p+1;{ type = ttLeftParen;  {p++; cs = 4; goto _out;} }}
-	goto st4;
+#line 29 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p+1;{ type = ttComment;    {p++; cs = 5; goto _out;} }}
+	goto st5;
 tr8:
-#line 48 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p+1;{ type = ttRightParen; {p++; cs = 4; goto _out;} }}
-	goto st4;
+#line 55 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p+1;}
+	goto st5;
 tr9:
-#line 41 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p+1;{ type = ttOperator; {p++; cs = 4; goto _out;} }}
-	goto st4;
+#line 50 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p+1;{ type = ttLeftParen;  {p++; cs = 5; goto _out;} }}
+	goto st5;
 tr10:
-#line 37 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p+1;{ type = ttOperator; {p++; cs = 4; goto _out;} }}
-	goto st4;
+#line 52 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p+1;{ type = ttRightParen; {p++; cs = 5; goto _out;} }}
+	goto st5;
+tr11:
+#line 45 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p+1;{ type = ttOperator; {p++; cs = 5; goto _out;} }}
+	goto st5;
 tr12:
+#line 41 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p+1;{ type = ttOperator; {p++; cs = 5; goto _out;} }}
+	goto st5;
+tr14:
+#line 47 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p+1;{ type = ttOperator; {p++; cs = 5; goto _out;} }}
+	goto st5;
+tr17:
 #line 43 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p+1;{ type = ttOperator; {p++; cs = 4; goto _out;} }}
-	goto st4;
-tr15:
-#line 1 "NONE"
-	{	switch( act ) {
-	case 4:
-	{{p = ((te))-1;} type = ttIntLiteral; {p++; cs = 4; goto _out;} }
-	break;
-	case 6:
-	{{p = ((te))-1;} type = ttOperator; {p++; cs = 4; goto _out;} }
-	break;
-	}
-	}
-	goto st4;
-tr16:
+	{te = p;p--;{ type = ttOperator; {p++; cs = 5; goto _out;} }}
+	goto st5;
+tr18:
+#line 33 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p;p--;{ type = ttInteger;    {p++; cs = 5; goto _out;} }}
+	goto st5;
+tr20:
+#line 37 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+	{te = p;p--;{ type = ttFloat;      {p++; cs = 5; goto _out;} }}
+	goto st5;
+tr21:
 #line 25 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{te = p;p--;{ type = ttIdentifier; {p++; cs = 4; goto _out;} }}
-	goto st4;
-st4:
+	{te = p;p--;{ type = ttIdentifier; {p++; cs = 5; goto _out;} }}
+	goto st5;
+st5:
 #line 1 "NONE"
 	{ts = 0;}
 	if ( ++p == pe )
-		goto _test_eof4;
-case 4:
+		goto _test_eof5;
+case 5:
 #line 1 "NONE"
 	{ts = p;}
-#line 140 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+#line 144 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 	switch( (*p) ) {
-		case 32: goto tr6;
+		case 32: goto tr8;
 		case 34: goto st1;
-		case 40: goto tr7;
-		case 41: goto tr8;
-		case 42: goto tr9;
-		case 43: goto tr10;
-		case 45: goto tr11;
-		case 47: goto tr12;
-		case 59: goto st3;
-		case 95: goto st6;
+		case 40: goto tr9;
+		case 41: goto tr10;
+		case 42: goto tr11;
+		case 43: goto tr12;
+		case 45: goto st6;
+		case 47: goto tr14;
+		case 59: goto st4;
+		case 95: goto st9;
 	}
 	if ( (*p) < 48 ) {
 		if ( 9 <= (*p) && (*p) <= 13 )
-			goto tr6;
+			goto tr8;
 	} else if ( (*p) > 57 ) {
 		if ( (*p) > 90 ) {
 			if ( 97 <= (*p) && (*p) <= 122 )
-				goto st6;
+				goto st9;
 		} else if ( (*p) >= 65 )
-			goto st6;
+			goto st9;
 	} else
-		goto tr13;
+		goto tr15;
 	goto st0;
 st0:
 cs = 0;
@@ -179,77 +183,104 @@ st2:
 		goto _test_eof2;
 case 2:
 	goto st1;
-tr11:
-#line 1 "NONE"
-	{te = p+1;}
-#line 39 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{act = 6;}
-	goto st5;
-tr13:
-#line 1 "NONE"
-	{te = p+1;}
-#line 33 "/home/alpha/dev/LispTransCpp/lisplex.rl"
-	{act = 4;}
-	goto st5;
-st5:
-	if ( ++p == pe )
-		goto _test_eof5;
-case 5:
-#line 199 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
-	if ( 48 <= (*p) && (*p) <= 57 )
-		goto tr13;
-	goto tr15;
-st3:
-	if ( ++p == pe )
-		goto _test_eof3;
-case 3:
-	if ( (*p) == 10 )
-		goto tr5;
-	goto st3;
 st6:
 	if ( ++p == pe )
 		goto _test_eof6;
 case 6:
+	if ( 48 <= (*p) && (*p) <= 57 )
+		goto tr15;
+	goto tr17;
+tr15:
+#line 1 "NONE"
+	{te = p+1;}
+	goto st7;
+st7:
+	if ( ++p == pe )
+		goto _test_eof7;
+case 7:
+#line 202 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+	if ( (*p) == 46 )
+		goto st3;
+	if ( 48 <= (*p) && (*p) <= 57 )
+		goto tr15;
+	goto tr18;
+st3:
+	if ( ++p == pe )
+		goto _test_eof3;
+case 3:
+	if ( 48 <= (*p) && (*p) <= 57 )
+		goto st8;
+	goto tr4;
+st8:
+	if ( ++p == pe )
+		goto _test_eof8;
+case 8:
+	if ( 48 <= (*p) && (*p) <= 57 )
+		goto st8;
+	goto tr20;
+st4:
+	if ( ++p == pe )
+		goto _test_eof4;
+case 4:
+	if ( (*p) == 10 )
+		goto tr7;
+	goto st4;
+st9:
+	if ( ++p == pe )
+		goto _test_eof9;
+case 9:
 	if ( (*p) == 95 )
-		goto st6;
+		goto st9;
 	if ( (*p) < 65 ) {
 		if ( 48 <= (*p) && (*p) <= 57 )
-			goto st6;
+			goto st9;
 	} else if ( (*p) > 90 ) {
 		if ( 97 <= (*p) && (*p) <= 122 )
-			goto st6;
+			goto st9;
 	} else
-		goto st6;
-	goto tr16;
+		goto st9;
+	goto tr21;
 	}
-	_test_eof4: cs = 4; goto _test_eof; 
-	_test_eof1: cs = 1; goto _test_eof; 
-	_test_eof2: cs = 2; goto _test_eof; 
-	_test_eof5: cs = 5; goto _test_eof; 
-	_test_eof3: cs = 3; goto _test_eof; 
-	_test_eof6: cs = 6; goto _test_eof; 
+	_test_eof5: cs = 5; goto _test_eof;
+	_test_eof1: cs = 1; goto _test_eof;
+	_test_eof2: cs = 2; goto _test_eof;
+	_test_eof6: cs = 6; goto _test_eof;
+	_test_eof7: cs = 7; goto _test_eof;
+	_test_eof3: cs = 3; goto _test_eof;
+	_test_eof8: cs = 8; goto _test_eof;
+	_test_eof4: cs = 4; goto _test_eof;
+	_test_eof9: cs = 9; goto _test_eof;
 
 	_test_eof: {}
 	if ( p == eof )
 	{
 	switch ( cs ) {
-	case 5: goto tr15;
-	case 6: goto tr16;
+	case 6: goto tr17;
+	case 7: goto tr18;
+	case 3: goto tr4;
+	case 8: goto tr20;
+	case 9: goto tr21;
 	}
 	}
 
 	_out: {}
 	}
 
-#line 97 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 101 "/home/alpha/dev/LispTransCpp/lisplex.rl"
     m_State.Update(cs, act, p, ts, te);
-    if ( cs == 
-#line 248 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
+    if ( cs ==
+#line 273 "/home/alpha/dev/LispTransCpp/lisplex.rl.cpp"
 0
-#line 98 "/home/alpha/dev/LispTransCpp/lisplex.rl"
+#line 102 "/home/alpha/dev/LispTransCpp/lisplex.rl"
  || !ts)
     {
         return AbstractToken(ttInvalid, -1);
+    }
+
+    if (type == ttString) // strip quotes
+    {
+        ++ts;
+        --te;
     }
 
     std::vector<int> id = m_pTokenDatabase->GetIdSet(ts, te);
